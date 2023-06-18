@@ -1,7 +1,6 @@
 import StatLine from "./StatLine";
 
 const Statistics = ({ history, good, bad, neutral }) => {
-  console.log(history);
   if (history.length === 0) {
     return (
       <div>

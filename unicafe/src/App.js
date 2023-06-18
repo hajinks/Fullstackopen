@@ -23,12 +23,12 @@ function App() {
   const [selected, setSelected] = useState(0); // idx for anecdote array
   const [nextAnecdote, setNextAnecdote] = useState("get anecdote");
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+  const [champ, setTopScore] = useState([0, ""]); // anecdote idx and highscore
 
   // Handle buttons for good/bad/neutral feedback
   const handleClick = (score) => () => {
     let incr;
     let val;
-    console.log(score);
     switch (score) {
       case "G":
         incr = setGood;
@@ -53,14 +53,12 @@ function App() {
 
   function getAnecdote() {
     // First change the button to say "next anecdote"
-    console.log("started?", startedAnecdotes());
     if (!startedAnecdotes()) {
       setNextAnecdote("next anecdote");
     }
     // Select a random index
     const max = anecdotes.length;
     const next = Math.floor(Math.random() * max);
-    console.log("next", next, anecdotes[next]);
     setSelected(next);
   }
 
@@ -91,8 +89,31 @@ function App() {
       return <p>votes: {votes[selected]}</p>;
     }
   }
+  console.log("votes", votes);
 
-  console.log(selected, nextAnecdote);
+  function ShowWinner() {
+    const highest = Math.max(...votes);
+    // Check we have a winner
+    if (votes.every((el) => el === votes[0], 1)) {
+      return <div>No winners yet</div>;
+    } else {
+      const winIdx = votes.findIndex((vote) => vote === highest);
+      // Don't override if tied 1st but earlier idx
+      // If winner name or score changes, update
+      if (
+        winIdx !== champ[0] ||
+        (winIdx === champ[0] && highest !== champ[1])
+      ) {
+        console.log("updating");
+        setTopScore([winIdx, highest]);
+      }
+      return (
+        <div className="champ">
+          {anecdotes[champ[0]]} ({champ[1]})
+        </div>
+      );
+    }
+  }
 
   return (
     <div className="grid-root">
@@ -121,7 +142,7 @@ function App() {
           active={nextAnecdote === "next anecdote"}
           change={1}
           idx={selected}
-          text="♥"
+          text="💝"
         />
         <Button handleClick={getAnecdote} text={nextAnecdote} />
         <Vote
@@ -131,6 +152,8 @@ function App() {
           text="🤬"
         />
       </div>
+      <h1>Hall of Fame</h1>
+      <ShowWinner />
     </div>
   );
 }
