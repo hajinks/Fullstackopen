@@ -1,0 +1,40 @@
+body {
+  background-color: rgb(36, 13, 73);
+  color: antiquewhite;
+}
+
+.main {
+  background-color: rgba(18, 27, 105, 0.849);
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  border-radius: 100px;
+}
+
+.part:not(:last-child) {
+  border-bottom: cyan;
+  border-bottom-style: ridge;
+}
+
+h1 {
+  text-align: center;
+}
+
+.part {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  grid-gap: 5%;
+}
+
+p {
+  text-align: center;
+}
+
+li {
+  margin: 10px 10px;
+}
+
+ul {
+  vertical-align: middle;
+}
